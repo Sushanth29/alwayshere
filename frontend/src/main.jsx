@@ -13,7 +13,7 @@ const wishlistStorageKey = 'always-here-wishlist';
 const communicationSections = [
   { icon: '💭', title: 'Tell me something', text: 'No category. No rules.', key: 'anything', tone: 'lavender' },
   { icon: '❤️', title: 'Something I should know', text: 'The things you wish I knew.', key: 'know', tone: 'rose' },
-  { icon: '🥺', title: "Things I can't say out loud", text: 'Some words are easier here.', key: 'hard', tone: 'slate' },
+  { icon: '🥺', title: "Things you can't say out loud", text: 'Some words are easier here.', key: 'hard', tone: 'slate' },
   { icon: '🎶', title: 'A song for you', text: 'A little dedication, just because.', key: 'song', tone: 'peach' },
   { icon: '🎬', title: 'Rom-com night', text: 'Movie picks and cute chaos.', key: 'movie', tone: 'violet' },
 ];
@@ -27,11 +27,11 @@ const needSections = [
 ];
 
 const movieOptions = [
-  '10 Things I Hate About You',
-  'The Notebook',
+  'Love Hypothesis (2026)',
+  'Notting Hill',
+  'Pride and Prejudice',
+  'Sleepless in Seattle',
   'Before Sunrise',
-  'Kuch Kuch Hota Hai',
-  'Dilwale Dulhania Le Jayenge',
 ];
 
 const needOptions = [
@@ -77,7 +77,7 @@ const jokePool = [
 const dedicationSongs = [
   { title: 'Kaise Hua', artist: 'Vishal Mishra', videoId: '5DFJO3rNRTA' },
   { title: 'Talapu Talapu', artist: 'Vivek Sagar', videoId: 'JJl6KGqa08k' },
-  { title: "We Don't Talk Anymore", artist: 'Charlie Puth', videoId: '3AtDnEC4zak' },
+  { title: 'Ninnu Chuse Anandamlo', artist: 'Anirudh Ravichander & Sid Sriram', videoId: 'J7NIYS6A3Pc' },
   { title: 'Perfect', artist: 'Ed Sheeran', videoId: '2Vv-BfVoq4g' },
   { title: 'Until I Found You', artist: 'Stephen Sanchez', videoId: 'GxldQ9eX2wo' },
 ];
@@ -415,9 +415,10 @@ function OurStory({ onBack }) {
   const [nickname] = useState(() => randomNickname());
   const timeline = [
     { year: '29 Jan 2020', event: 'The beginning of us, and my favorite yes to life.', icon: '✨' },
-    { year: '2022–2023 · Bangalore', event: 'I took flights and long bus rides to see you. We found every chance we could to meet, and every mile was worth it.', icon: '✈️' },
+    { year: '2022–2023 · Bangalore', event: 'Bangalore meant long bus rides for me. I would get on that bus knowing that, at the other end of the journey, I would get to see you. Somehow that made every hour feel worth it.', icon: '🚌' },
     { year: '2023–2024 · Hyderabad', event: 'Your home and my home both became part of our Hyderabad chapter. Every visit felt like finding my way back to you.', icon: '🏠' },
-    { year: '2024–2026 · Bhubaneswar', event: 'A new city between us, but we kept finding our way to each other.', icon: '🌧️' },
+    { year: '2024–2026 · Bhubaneswar', event: 'Then came Bhubaneswar, and this time there were flights between us. Different city, longer distance, same excitement every single time I knew I was going to see you.', icon: '✈️' },
+    { year: 'Apr–May 2025 · Pune', event: 'And somewhere in the middle of everything, there was Pune too — another little chapter on our map, another city that became part of our story.', icon: '🌸' },
     { year: '2026–now · Indore', event: 'A new chapter, a new city, and still the same person I want beside me: you.', icon: '🌅' },
   ];
 
@@ -503,10 +504,14 @@ function BirthdayPage({ onBack }) {
         {letterOpen && (
           <article className="birthday-letter">
             <p>My dearest {nickname},</p>
-            <p>On your birthday, I keep thinking about how lucky I am that the world brought me to you. I have crossed cities, waited through long journeys, and counted down to reunions, and I would choose every mile again if it led me to you.</p>
-            <p>My wish for your new year is simple: may you feel cherished on ordinary Tuesdays, brave when life feels big, and loved in every place you go. I hope I get to be there for the laughter, the little victories, the quiet days, and all the birthdays still waiting for us.</p>
-            <p>You make my life warmer just by being in it. I love you more than this little page can hold.</p>
-            <p className="birthday-letter-signoff">All my love,<br />me ♡</p>
+            <p>Sometimes I genuinely wonder how I got this lucky. Out of all the people in this ridiculously huge world, somehow I got you. Someone so kind, so caring, and so full of warmth that you probably do not even realise how much of it you leave with the people around you. Especially me.</p>
+            <p>I love your smile. I love your laugh. I love the stupid little moments that become ten times better just because you are there. You have brought a kind of joy into my life that I did not know how to ask for. You made me see the world in colours I did not even know existed.</p>
+            <p>And yes, there is one thing about you that I hate. I hate how much you hide sometimes. How you hesitate to tell me what is going on inside that head of yours. How you keep things to yourself because maybe you think it is easier, or because you do not want to bother me. I wish you would not. I want the messy thoughts too. The anger. The fear. The overthinking. The things that are difficult to say out loud. That is why this little place exists. I hope <strong>always.here</strong> makes it even a tiny bit easier for you to tell me those things whenever words feel hard.</p>
+            <p>I know I have my pride. I know I have an ego. But with you, I have learnt that some things are simply not worth winning. If losing an argument means understanding you better, I will lose it. If putting my pride aside means seeing you smile again, I will. You matter to me more than being right ever will.</p>
+            <p>There are days when I look at you and feel like poetry fails at its only job, because it still cannot put your beauty into words. Music fails too, because no melody could ever quite contain your smile. Maybe some things are just meant to be felt instead of explained. And that is what you are to me.</p>
+            <p>Thank you for the laughter, the joy, the softness, the chaos, and every little bit of you that has become such a huge part of me. I do not know what every year ahead of us will look like. I only know one thing for certain: until time runs out, I will be there for you. Always.</p>
+            <p>Happy birthday, my love. I am so, so lucky to have you.</p>
+            <p className="birthday-letter-signoff">Always yours,<br />me ♡</p>
           </article>
         )}
       </section>
