@@ -291,3 +291,60 @@ textarea::placeholder { color: #b7a7a1; }
   .dedication-list { gap: 18px; }
   .movie-card { align-items: flex-start; flex-direction: column; }
 }
+
+.birthday-page { position: relative; min-height: 100vh; overflow: hidden; padding: 24px 22px 64px; color: #fff7ef; text-align: center; background-color: #2b1930; background-image: radial-gradient(1px 1px at 13% 11%, #f9d99e 98%, transparent), radial-gradient(1px 1px at 83% 17%, #f9d99e 98%, transparent), radial-gradient(1px 1px at 72% 38%, #e7b2cc 98%, transparent), radial-gradient(1px 1px at 24% 44%, #e7b2cc 98%, transparent), linear-gradient(145deg, #26172d 0%, #49213c 54%, #783c4c 100%); }
+.birthday-back { display: block; width: min(920px, 100%); margin: 0 auto; border: 0; background: transparent; color: #f2dce4; text-align: left; }
+.birthday-hero { max-width: 760px; margin: 0 auto; padding: 38px 12px 0; }
+.birthday-eyebrow { margin: 0 0 14px; color: #f6d38d; font-size: 11px; font-weight: 700; letter-spacing: .14em; }
+.birthday-hero h1 { margin: 0; color: #fff7ef; font-family: 'Playfair Display', serif; font-size: 68px; font-weight: 500; line-height: 1.05; letter-spacing: 0; }
+.birthday-hero h1 span { color: #ffd88f; }
+.birthday-hero > p:last-child { max-width: 620px; margin: 22px auto 0; color: #f4dfe2; font-size: 16px; line-height: 1.8; }
+.birthday-wish { position: relative; max-width: 620px; margin: 20px auto 0; padding: 12px 12px 24px; }
+.birthday-wish h2 { margin: 0; color: #fff0d1; font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 500; }
+.birthday-cake { position: relative; display: block; width: 300px; height: 246px; margin: 12px auto 0; border: 0; background: transparent; }
+.birthday-candles { position: absolute; z-index: 2; top: 18px; left: 50%; display: flex; width: 100px; justify-content: space-between; transform: translateX(-50%); }
+.birthday-candle { position: relative; width: 12px; height: 54px; border-radius: 4px 4px 2px 2px; background: repeating-linear-gradient(135deg, #f7d785 0 6px, #fff3cf 6px 11px); box-shadow: 0 0 0 1px rgba(67, 37, 46, .12); }
+.birthday-candle i { position: absolute; top: -18px; left: 2px; width: 9px; height: 15px; border-radius: 60% 60% 45% 45%; background: linear-gradient(180deg, #fff8ba, #ffb34c 72%, #ec7549); filter: drop-shadow(0 0 8px rgba(255, 199, 105, .8)); animation: candle-flicker 1s ease-in-out infinite alternate; transition: opacity .3s, transform .3s; }
+.candle-1 i { animation-delay: .3s; }
+.candle-2 i { animation-delay: .6s; }
+.birthday-page.wish-made .birthday-candle i { opacity: 0; transform: translateY(-12px) scale(.2); }
+.cake-top, .cake-middle, .cake-bottom, .cake-plate { position: absolute; left: 50%; display: block; transform: translateX(-50%); }
+.cake-top { bottom: 105px; width: 132px; height: 46px; border-radius: 50% 50% 12px 12px / 72% 72% 12px 12px; background: linear-gradient(180deg, #fff0d9 0 34%, #f7b7c5 35% 100%); }
+.cake-middle { bottom: 58px; width: 192px; height: 60px; border-radius: 14px 14px 18px 18px; background: linear-gradient(180deg, #ffe2ec 0 22%, #db789f 23% 100%); box-shadow: inset 0 -7px 0 rgba(121, 40, 79, .12); }
+.cake-bottom { bottom: 18px; width: 250px; height: 54px; border-radius: 14px 14px 20px 20px; background: linear-gradient(180deg, #fff0d9 0 24%, #f4c66f 25% 100%); box-shadow: inset 0 -7px 0 rgba(123, 75, 44, .12); }
+.cake-plate { bottom: 7px; width: 282px; height: 16px; border-radius: 50%; background: linear-gradient(180deg, #fff0c4, #d89d68); }
+.birthday-prompt { min-height: 28px; margin: 0 auto 16px; color: #f4dfe2; }
+.birthday-wish-button { padding: 13px 20px; border: 1px solid rgba(255, 222, 166, .7); border-radius: 999px; background: #f6d28a; color: #392338; font-weight: 700; }
+.birthday-wish-button:hover { background: #ffe6ae; }
+.birthday-confetti { position: absolute; inset: -20px 0 0; overflow: hidden; pointer-events: none; }
+.confetti-piece { position: absolute; top: -12px; left: calc(var(--piece) * 3.5%); width: 9px; height: 15px; border-radius: 2px; animation: confetti-fall 2.2s ease-in both; }
+.confetti-piece:nth-child(7n + 1) { background: #ffd88f; }
+.confetti-piece:nth-child(7n + 2) { background: #f5a7bd; }
+.confetti-piece:nth-child(7n + 3) { background: #fff3d1; }
+.confetti-piece:nth-child(7n + 4) { background: #bc8ee0; }
+.confetti-piece:nth-child(7n + 5) { background: #e98e6b; }
+.confetti-piece:nth-child(7n + 6) { background: #a9d6bd; }
+.confetti-piece:nth-child(7n) { background: #fff; }
+.birthday-letter-section { max-width: 720px; margin: 8px auto 0; padding-top: 22px; border-top: 1px solid rgba(255, 239, 222, .2); }
+.birthday-letter-toggle { display: flex; width: min(440px, 100%); min-height: 54px; justify-content: space-between; align-items: center; margin: 0 auto; padding: 12px 18px; border: 1px solid rgba(255, 239, 222, .34); border-radius: 10px; background: rgba(255, 255, 255, .08); color: #fff4df; text-align: left; }
+.birthday-letter { max-width: 660px; margin: 20px auto 0; padding: 26px 28px; border: 1px solid #eed6b6; border-radius: 10px; background: #fff9ed; color: #49313d; text-align: left; box-shadow: 0 20px 60px rgba(15, 8, 19, .2); }
+.birthday-letter p { margin: 0 0 16px; font-size: 15px; line-height: 1.8; }
+.birthday-letter p:first-child { font-family: 'Playfair Display', serif; font-size: 21px; }
+.birthday-letter .birthday-letter-signoff { margin: 22px 0 0; color: #855264; font-family: 'Playfair Display', serif; font-size: 18px; }
+.birthday-footer { max-width: 650px; margin: 32px auto 0; color: #f4dfe2; font-family: 'Playfair Display', serif; font-size: 17px; line-height: 1.7; }
+@keyframes candle-flicker { from { transform: scale(.9) rotate(-4deg); } to { transform: scale(1.1) rotate(4deg); } }
+@keyframes confetti-fall { 0% { opacity: 0; transform: translateY(0) rotate(0); } 12% { opacity: 1; } 100% { opacity: 0; transform: translateY(340px) rotate(320deg); } }
+
+@media (max-width: 600px) {
+  .birthday-page { padding: 18px 16px 44px; }
+  .birthday-hero { padding-top: 34px; }
+  .birthday-hero h1 { font-size: 44px; }
+  .birthday-hero > p:last-child { font-size: 14px; }
+  .birthday-wish h2 { font-size: 25px; }
+  .birthday-cake { transform: scale(.9); transform-origin: top center; margin-bottom: -18px; }
+  .birthday-letter { padding: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .birthday-candle i, .confetti-piece { animation: none; }
+}

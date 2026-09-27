@@ -48,14 +48,22 @@ const needOptions = [
 ];
 
 const relationshipQuotes = [
-  'Even across the miles, my heart still knows exactly where home is.',
+  'Even across the miles, my heart still knows exactly where home is: with you.',
   'Somehow, every ordinary day gets softer when it has you in it.',
-  'Different cities, the same moon, one stubborn little us.',
-  'Love is choosing each other again, gently, in all the small moments.',
+  'Different cities, the same moon, and my favorite person still you.',
+  'I keep choosing you in all the small moments, and I will keep choosing you.',
   'Your laugh is still my favorite plot twist.',
-  'Since January 29, 2020, every version of life has been better with you in it.',
-  'Distance changed the map, never the meaning of us.',
-  'On March 10, 2022, I said out loud what my heart had known for ages.',
+  'Since January 29, 2020, every version of my life has been better with you in it.',
+  'Distance changed the map, never what you mean to me.',
+  'The best part of every trip was knowing I was going to see you.',
+  'I have crossed cities to reach you, and I would take every journey again.',
+  'Bangalore, Hyderabad, Bhubaneswar, Indore: my favorite place in every city is beside you.',
+  'A long bus ride or a flight across the map: every mile was worth your smile.',
+  'You make every goodbye temporary and every reunion feel like a beginning.',
+  'When I picture the future, I do not picture a city first. I picture you.',
+  'You are the person I want to tell everything to, especially the little things.',
+  'I hope you feel how loved you are, even on the days I cannot hold you close.',
+  'My favorite thing about us is that after all this time, you still feel like my person.',
 ];
 
 const jokePool = [
@@ -83,7 +91,6 @@ function randomNickname() {
 function App() {
   const [page, setPage] = useState('entrance');
   const [selectedSection, setSelectedSection] = useState(null);
-  const [easterEggCounter, setEasterEggCounter] = useState(0);
 
   if (page === 'entrance') {
     return <Entrance onEnter={() => setPage('portal')} />;
@@ -105,6 +112,10 @@ function App() {
     return <JokePage onBack={() => setPage('portal')} />;
   }
 
+  if (page === 'birthday') {
+    return <BirthdayPage onBack={() => setPage('portal')} />;
+  }
+
   if (page === 'room' && selectedSection?.key === 'song') {
     return <SongDedicationPage onBack={() => setPage('portal')} />;
   }
@@ -124,8 +135,6 @@ function App() {
         setPage('room');
       }}
       onNavigate={setPage}
-      onEasterEgg={() => setEasterEggCounter((count) => count + 1)}
-      easterEggCounter={easterEggCounter}
     />
   );
 }
@@ -149,21 +158,13 @@ function Entrance({ onEnter }) {
   );
 }
 
-function Portal({ onSelectSection, onNavigate, onEasterEgg, easterEggCounter }) {
-  const [nickname, setNickname] = useState(() => randomNickname());
+function Portal({ onSelectSection, onNavigate }) {
+  const [nickname] = useState(() => randomNickname());
 
   return (
     <main className="portal">
       <header className="topbar">
-        <div
-          onClick={() => {
-            if (easterEggCounter > 0) {
-              setNickname(randomNickname());
-              onEasterEgg();
-            }
-          }}
-          style={{ cursor: easterEggCounter > 0 ? 'pointer' : 'default' }}
-        >
+        <div>
           <div className="brand">
             always<span>.</span>here
           </div>
@@ -237,11 +238,11 @@ function Portal({ onSelectSection, onNavigate, onEasterEgg, easterEggCounter }) 
         </button>
       </section>
 
-      <button className="birthday" onClick={() => onEasterEgg()}>
+      <button className="birthday" onClick={() => onNavigate('birthday')}>
         <span>🎁</span>
-        <div>
-          <strong>Something for you</strong>
-          <small>There's a little surprise waiting here.</small>
+          <div>
+            <strong>A birthday surprise for you</strong>
+            <small>Open the little celebration I made for your day.</small>
         </div>
         <b>→</b>
       </button>
@@ -323,7 +324,7 @@ function MessageRoom({ section, onBack }) {
         setError('Something went wrong. Try again?');
       }
     } catch (err) {
-      setError("Can't reach him right now. Try again in a moment.");
+      setError("I can't be reached right now. Please try again in a moment.");
     } finally {
       setLoading(false);
     }
@@ -336,7 +337,7 @@ function MessageRoom({ section, onBack }) {
         <p className="eyebrow">sent, {nickname}</p>
         <h2>Your note is on its way.</h2>
         <p>
-          It has left this little corner and is being delivered to him.
+          It has left this little corner and is on its way to me.
           <br />
           You said it. And that's enough.
         </p>
@@ -413,10 +414,11 @@ function MessageRoom({ section, onBack }) {
 function OurStory({ onBack }) {
   const [nickname] = useState(() => randomNickname());
   const timeline = [
-    { year: 'Jan 2020', event: 'It started here', icon: '✨' },
-    { year: 'Mar 2022', event: 'The official proposal', icon: '💍' },
-    { year: 'Oct 2022', event: 'Long distance began', icon: '🌍' },
-    { year: 'Today', event: 'Still choosing each other, every day', icon: '♡' },
+    { year: '29 Jan 2020', event: 'The beginning of us, and my favorite yes to life.', icon: '✨' },
+    { year: '2022–2023 · Bangalore', event: 'I took flights and long bus rides to see you. We found every chance we could to meet, and every mile was worth it.', icon: '✈️' },
+    { year: '2023–2024 · Hyderabad', event: 'Your home and my home both became part of our Hyderabad chapter. Every visit felt like finding my way back to you.', icon: '🏠' },
+    { year: '2024–2026 · Bhubaneswar', event: 'A new city between us, but we kept finding our way to each other.', icon: '🌧️' },
+    { year: '2026–now · Indore', event: 'A new chapter, a new city, and still the same person I want beside me: you.', icon: '🌅' },
   ];
 
   return (
@@ -425,8 +427,8 @@ function OurStory({ onBack }) {
 
       <div className="archive-header">
         <p className="eyebrow">📖</p>
-        <h2>Our Story</h2>
-        <p>{nickname}, everything that brought us here.</p>
+        <h2>Our story, city by city</h2>
+        <p>{nickname}, the cities changed. My destination stayed you.</p>
       </div>
 
       <div className="timeline">
@@ -440,8 +442,76 @@ function OurStory({ onBack }) {
       </div>
 
       <div className="archive-footer">
-        <p>The rest is unwritten. And that's beautiful.</p>
+        <p>I have loved every journey, every reunion, and every year of finding my way back to you.</p>
       </div>
+    </main>
+  );
+}
+
+function BirthdayPage({ onBack }) {
+  const [nickname] = useState(() => randomNickname());
+  const [wishMade, setWishMade] = useState(false);
+  const [letterOpen, setLetterOpen] = useState(false);
+
+  return (
+    <main className={`birthday-page ${wishMade ? 'wish-made' : ''}`}>
+      <button className="birthday-back" onClick={onBack}>← back to our little place</button>
+
+      <header className="birthday-hero">
+        <p className="birthday-eyebrow">SEPTEMBER 28 · YOUR DAY</p>
+        <h1>Happy birthday,<br /><span>{nickname}!</span></h1>
+        <p>Today I get to celebrate you: my favorite person, my safest place, and the smile I carry with me everywhere.</p>
+      </header>
+
+      <section className="birthday-wish" aria-labelledby="birthday-wish-title">
+        <h2 id="birthday-wish-title">Make a wish, my love</h2>
+        <button
+          type="button"
+          className="birthday-cake"
+          onClick={() => setWishMade(true)}
+          aria-label={wishMade ? 'Birthday candles blown out' : 'Blow out your birthday candles'}
+          aria-pressed={wishMade}
+        >
+          <span className="birthday-candles" aria-hidden="true">
+            {[0, 1, 2].map((candle) => (
+              <span className={`birthday-candle candle-${candle}`} key={candle}><i /></span>
+            ))}
+          </span>
+          <span className="cake-top" />
+          <span className="cake-middle" />
+          <span className="cake-bottom" />
+          <span className="cake-plate" />
+        </button>
+        <p className="birthday-prompt">
+          {wishMade ? 'I hope every wish you made finds its way to you. ♡' : 'Close your eyes, make a wish, and tap the candles.'}
+        </p>
+        <button className="birthday-wish-button" type="button" onClick={() => setWishMade(true)}>
+          {wishMade ? 'your wish is in the universe ♡' : 'I’m right here while you wish'}
+        </button>
+        {wishMade && (
+          <div className="birthday-confetti" aria-hidden="true">
+            {Array.from({ length: 28 }, (_, index) => <i key={index} className={`confetti-piece piece-${index % 7}`} style={{ '--piece': index }} />)}
+          </div>
+        )}
+      </section>
+
+      <section className="birthday-letter-section">
+        <p className="birthday-eyebrow">A LITTLE NOTE FROM ME</p>
+        <button className="birthday-letter-toggle" type="button" onClick={() => setLetterOpen((open) => !open)}>
+          {letterOpen ? 'Fold my letter back up' : 'Open your birthday letter'} <span aria-hidden="true">{letterOpen ? '↑' : '↓'}</span>
+        </button>
+        {letterOpen && (
+          <article className="birthday-letter">
+            <p>My dearest {nickname},</p>
+            <p>On your birthday, I keep thinking about how lucky I am that the world brought me to you. I have crossed cities, waited through long journeys, and counted down to reunions, and I would choose every mile again if it led me to you.</p>
+            <p>My wish for your new year is simple: may you feel cherished on ordinary Tuesdays, brave when life feels big, and loved in every place you go. I hope I get to be there for the laughter, the little victories, the quiet days, and all the birthdays still waiting for us.</p>
+            <p>You make my life warmer just by being in it. I love you more than this little page can hold.</p>
+            <p className="birthday-letter-signoff">All my love,<br />me ♡</p>
+          </article>
+        )}
+      </section>
+
+      <footer className="birthday-footer">Wherever you are today, a piece of my heart is celebrating beside you.</footer>
     </main>
   );
 }
