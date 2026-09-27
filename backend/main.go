@@ -2,9 +2,12 @@ package main
 
 import (
 	"bytes"
+	"crypto/tls"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
+	"net"
 	"net/smtp"
 	"os"
 	"path/filepath"
@@ -46,13 +49,46 @@ func sendEmail(msg Message) error {
 	auth := smtp.PlainAuth("", senderEmail, senderPassword, smtpHost)
 	emailBody := fmt.Sprintf("Subject: %s\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n%s", subject, htmlBody.String())
 
-	return smtp.SendMail(
-		smtpHost+":"+smtpPort,
-		auth,
-		senderEmail,
-		[]string{recipientEmail},
-		[]byte(emailBody),
-	)
+	conn, err := net.DialTimeout("tcp", smtpHost+":"+smtpPort, 10*time.Second)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	if err := conn.SetDeadline(time.Now().Add(20 * time.Second)); err != nil {
+		return err
+	}
+	client, err := smtp.NewClient(conn, smtpHost)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	if ok, _ := client.Extension("STARTTLS"); ok {
+		if err := client.StartTLS(&tls.Config{ServerName: smtpHost, MinVersion: tls.VersionTLS12}); err != nil {
+			return err
+		}
+	}
+	if err := client.Auth(auth); err != nil {
+		return err
+	}
+	if err := client.Mail(senderEmail); err != nil {
+		return err
+	}
+	if err := client.Rcpt(recipientEmail); err != nil {
+		return err
+	}
+	writer, err := client.Data()
+	if err != nil {
+		return err
+	}
+	if _, err := io.WriteString(writer, emailBody); err != nil {
+		return err
+	}
+	if err := writer.Close(); err != nil {
+		return err
+	}
+	return client.Quit()
 }
 
 func main() {
@@ -83,10 +119,11 @@ func main() {
 		}
 		msg.Created = time.Now()
 
-		if err := sendEmail(msg); err != nil {
-			fmt.Printf("Email error: %v\n", err)
-		}
-
+		go func() {
+			if err := sendEmail(msg); err != nil {
+				fmt.Printf("Email error: %v\n", err)
+			}
+		}()
 		c.JSON(http.StatusAccepted, gin.H{"status": "received"})
 	})
 

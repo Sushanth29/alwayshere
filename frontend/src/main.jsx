@@ -333,10 +333,10 @@ function MessageRoom({ section, onBack }) {
     return (
       <main className="sent-screen">
         <div className="sent-heart">♡</div>
-        <p className="eyebrow">delivered, {nickname}</p>
-        <h2>It's on its way to him.</h2>
+        <p className="eyebrow">sent, {nickname}</p>
+        <h2>Your note is on its way.</h2>
         <p>
-          You don't have to wonder whether you said it perfectly.
+          It has left this little corner and is being delivered to him.
           <br />
           You said it. And that's enough.
         </p>
