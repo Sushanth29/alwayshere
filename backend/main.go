@@ -3,11 +3,12 @@ package main
 import (
 	"bytes"
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
-	"net/http"
 	"net"
+	"net/http"
 	"net/smtp"
 	"os"
 	"path/filepath"
@@ -24,14 +25,27 @@ type Message struct {
 	Created  time.Time `json:"created"`
 }
 
+type EmailAddress struct {
+	Email string `json:"email"`
+	Name  string `json:"name,omitempty"`
+}
+
+type BrevoEmail struct {
+	Sender      EmailAddress   `json:"sender"`
+	To          []EmailAddress `json:"to"`
+	Subject     string         `json:"subject"`
+	HTMLContent string         `json:"htmlContent"`
+}
+
 func sendEmail(msg Message) error {
+	brevoAPIKey := os.Getenv("BREVO_API_KEY")
 	smtpHost := os.Getenv("SMTP_HOST")
 	smtpPort := os.Getenv("SMTP_PORT")
 	senderEmail := os.Getenv("SENDER_EMAIL")
 	senderPassword := os.Getenv("SENDER_PASSWORD")
 	recipientEmail := os.Getenv("RECIPIENT_EMAIL")
 
-	if smtpHost == "" {
+	if smtpHost == "" && brevoAPIKey == "" {
 		fmt.Printf("[EMAIL] To: %s\nSubject: 💌 %s\n\n%s\n\n---\n", recipientEmail, msg.Title, msg.Body)
 		return nil
 	}
@@ -48,6 +62,9 @@ func sendEmail(msg Message) error {
 
 	auth := smtp.PlainAuth("", senderEmail, senderPassword, smtpHost)
 	emailBody := fmt.Sprintf("Subject: %s\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n%s", subject, htmlBody.String())
+	if brevoAPIKey != "" {
+		return sendWithBrevo(brevoAPIKey, senderEmail, recipientEmail, subject, htmlBody.String())
+	}
 
 	conn, err := net.DialTimeout("tcp", smtpHost+":"+smtpPort, 10*time.Second)
 	if err != nil {
@@ -89,6 +106,39 @@ func sendEmail(msg Message) error {
 		return err
 	}
 	return client.Quit()
+}
+
+func sendWithBrevo(apiKey, senderEmail, recipientEmail, subject, htmlContent string) error {
+	payload := BrevoEmail{
+		Sender:      EmailAddress{Email: senderEmail, Name: "always.here"},
+		To:          []EmailAddress{{Email: recipientEmail}},
+		Subject:     subject,
+		HTMLContent: htmlContent,
+	}
+	requestBody, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+
+	request, err := http.NewRequest(http.MethodPost, "https://api.brevo.com/v3/smtp/email", bytes.NewReader(requestBody))
+	if err != nil {
+		return err
+	}
+	request.Header.Set("api-key", apiKey)
+	request.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{Timeout: 10 * time.Second}
+	response, err := client.Do(request)
+	if err != nil {
+		return err
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode < http.StatusOK || response.StatusCode >= http.StatusMultipleChoices {
+		responseBody, _ := io.ReadAll(io.LimitReader(response.Body, 4096))
+		return fmt.Errorf("Brevo API returned %s: %s", response.Status, responseBody)
+	}
+	return nil
 }
 
 func main() {

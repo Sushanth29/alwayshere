@@ -115,6 +115,8 @@ The root `Dockerfile` builds the React app and Go API together. The Go server se
 
 The Blueprint uses Render's free web plan. Free services may sleep after inactivity, so the first visit after a quiet period can take a little longer to load. Wishlist entries remain in the visitor's browser and are not synchronized between devices.
 
+For production email, use Brevo's HTTPS transactional email API because Render blocks outbound SMTP ports. Create a free Brevo account, verify the sender email address, create an API key, and add it to Render as `BREVO_API_KEY`. Keep `SENDER_EMAIL` and `RECIPIENT_EMAIL` set as well. The app continues to use SMTP locally when no Brevo API key is configured.
+
 ## 🏗️ Architecture
 
 **Frontend** (React + Vite)
