@@ -449,10 +449,57 @@ function OurStory({ onBack }) {
   );
 }
 
+function playHappyBirthday() {
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContext) return;
+
+  const audioContext = new AudioContext();
+  const notes = [
+    ['G4', 0.28], ['G4', 0.28], ['A4', 0.55], ['G4', 0.55], ['C5', 0.55], ['B4', 1.05],
+    ['G4', 0.28], ['G4', 0.28], ['A4', 0.55], ['G4', 0.55], ['D5', 0.55], ['C5', 1.05],
+    ['G4', 0.28], ['G4', 0.28], ['G5', 0.55], ['E5', 0.55], ['C5', 0.55], ['B4', 0.55], ['A4', 1.05],
+    ['F5', 0.28], ['F5', 0.28], ['E5', 0.55], ['C5', 0.55], ['D5', 0.55], ['C5', 1.2],
+  ];
+
+  const frequencies = {
+    G4: 392.00, A4: 440.00, B4: 493.88, C5: 523.25, D5: 587.33,
+    E5: 659.25, F5: 698.46, G5: 783.99,
+  };
+
+  const start = audioContext.currentTime + 0.05;
+  let cursor = start;
+
+  notes.forEach(([note, duration]) => {
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    oscillator.type = 'sine';
+    oscillator.frequency.value = frequencies[note];
+
+    gain.gain.setValueAtTime(0.0001, cursor);
+    gain.gain.exponentialRampToValueAtTime(0.16, cursor + 0.025);
+    gain.gain.setValueAtTime(0.16, cursor + Math.max(0.04, duration - 0.08));
+    gain.gain.exponentialRampToValueAtTime(0.0001, cursor + duration);
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+    oscillator.start(cursor);
+    oscillator.stop(cursor + duration + 0.02);
+    cursor += duration;
+  });
+
+  window.setTimeout(() => audioContext.close(), Math.ceil((cursor - start + 0.5) * 1000));
+}
+
 function BirthdayPage({ onBack }) {
   const [nickname] = useState(() => randomNickname());
   const [wishMade, setWishMade] = useState(false);
   const [letterOpen, setLetterOpen] = useState(false);
+
+  const makeWish = () => {
+    if (wishMade) return;
+    setWishMade(true);
+    playHappyBirthday();
+  };
 
   return (
     <main className={`birthday-page ${wishMade ? 'wish-made' : ''}`}>
@@ -469,8 +516,8 @@ function BirthdayPage({ onBack }) {
         <button
           type="button"
           className="birthday-cake"
-          onClick={() => setWishMade(true)}
-          aria-label={wishMade ? 'Birthday candles blown out' : 'Blow out your birthday candles'}
+          onClick={makeWish}
+          aaria-label={wishMade ? 'Birthday candles blown out' : 'Blow out your birthday candles'}
           aria-pressed={wishMade}
         >
           <span className="birthday-candles" aria-hidden="true">
